@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: conexao-motos
+    runtime: python
+    plan: free
+    buildCommand: ./build.sh
+    startCommand: gunicorn conexao_motos.wsgi
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.1
+      - key: DJANGO_SETTINGS_MODULE
+        value: conexao_motos.settings
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: 'False'
