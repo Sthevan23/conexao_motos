@@ -4,7 +4,7 @@ services:
     runtime: python
     plan: free
     buildCommand: ./build.sh
-    startCommand: gunicorn conexao_motos.wsgi
+    startCommand: gunicorn conexao_motos.wsgi:application --bind 0.0.0.0:$PORT
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.1
