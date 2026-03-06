@@ -1,0 +1,65 @@
+{% extends "oficina/base.html" %}
+
+{% block content %}
+<div class="cm-toolbar mb-3">
+    <div>
+        <h1 class="cm-page-title mb-1">Nova moto</h1>
+        <div class="cm-page-subtitle">Cadastre os dados da moto e vincule ao cliente</div>
+    </div>
+</div>
+
+<div class="card cm-card">
+    <div class="cm-card-header">
+        <div class="fw-bold">Dados da moto</div>
+        <div class="cm-muted small">A placa deve ser única</div>
+    </div>
+    <div class="cm-card-body">
+        <form method="post" class="cm-form">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+            {% endif %}
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="{{ form.cliente.id_for_label }}">Cliente</label>
+                    {{ form.cliente }}
+                    {{ form.cliente.errors }}
+                </div>
+                <div class="col-md-3">
+                    <label for="{{ form.placa.id_for_label }}">Placa</label>
+                    {{ form.placa }}
+                    {{ form.placa.errors }}
+                </div>
+                <div class="col-md-3">
+                    <label for="{{ form.ano.id_for_label }}">Ano</label>
+                    {{ form.ano }}
+                    {{ form.ano.errors }}
+                </div>
+                <div class="col-md-4">
+                    <label for="{{ form.marca.id_for_label }}">Marca</label>
+                    {{ form.marca }}
+                    {{ form.marca.errors }}
+                </div>
+                <div class="col-md-5">
+                    <label for="{{ form.modelo.id_for_label }}">Modelo</label>
+                    {{ form.modelo }}
+                    {{ form.modelo.errors }}
+                </div>
+                <div class="col-md-3">
+                    <label for="{{ form.cor.id_for_label }}">Cor</label>
+                    {{ form.cor }}
+                    {{ form.cor.errors }}
+                </div>
+            </div>
+
+            <div class="mt-4 cm-form-actions">
+                <button type="submit" class="btn btn-success">Salvar</button>
+                <a href="{% url 'moto_list' %}" class="btn btn-outline-secondary">Voltar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+

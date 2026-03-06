@@ -1,0 +1,66 @@
+{% extends "oficina/base.html" %}
+
+{% block content %}
+<div class="cm-toolbar mb-3">
+    <div>
+        <h1 class="cm-page-title mb-1">Peças / Estoque</h1>
+        <div class="cm-page-subtitle">Controle de estoque com alertas de baixa quantidade</div>
+    </div>
+    <div class="d-flex gap-2 align-items-center">
+        <input class="form-control cm-search" placeholder="Buscar (em breve)" disabled>
+        <a href="{% url 'peca_create' %}" class="btn btn-primary">Nova peça</a>
+    </div>
+</div>
+
+<div class="card cm-card">
+    <div class="cm-card-header">
+        <div class="fw-bold">Estoque</div>
+        <div class="cm-muted small">{{ pecas|length }} item(ns)</div>
+    </div>
+    <div class="cm-card-body">
+        <div class="table-responsive">
+            <table class="table table-striped align-middle mb-0">
+                <thead>
+                <tr>
+                    <th>Peça</th>
+                    <th>Código</th>
+                    <th>Marca</th>
+                    <th class="text-end">Venda</th>
+                    <th class="text-end">Estoque</th>
+                    <th class="text-end">Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for peca in pecas %}
+                    <tr>
+                        <td class="fw-semibold">
+                            {{ peca.nome_da_peca }}
+                            {% if peca.quantidade_estoque <= 2 %}
+                                <span class="badge text-bg-warning ms-2">Baixo</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ peca.codigo }}</td>
+                        <td>{{ peca.marca|default:"-" }}</td>
+                        <td class="text-end">R$ {{ peca.preco_venda|floatformat:2 }}</td>
+                        <td class="text-end">{{ peca.quantidade_estoque }}</td>
+                        <td class="text-end">
+                            <a href="{% url 'peca_update' peca.id_peca %}" class="btn btn-sm btn-outline-secondary">Editar</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="6">
+                            <div class="py-4 text-center">
+                                <div class="fw-bold">Nenhuma peça cadastrada</div>
+                                <div class="cm-muted">Cadastre uma peça para começar a controlar o estoque.</div>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

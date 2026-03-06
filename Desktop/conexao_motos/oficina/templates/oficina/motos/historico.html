@@ -1,0 +1,54 @@
+{% extends "oficina/base.html" %}
+
+{% block content %}
+<div class="cm-toolbar mb-3">
+    <div>
+        <h1 class="cm-page-title mb-1">Histórico da moto</h1>
+        <div class="cm-page-subtitle"><strong>{{ moto }}</strong> — manutenção completa</div>
+    </div>
+    <div>
+        <a href="{% url 'moto_list' %}" class="btn btn-outline-secondary">Voltar</a>
+    </div>
+</div>
+
+<div class="card cm-card">
+    <div class="cm-card-header">
+        <div class="fw-bold">Ordens de serviço</div>
+        <div class="cm-muted small">{{ ordens|length }} registro(s)</div>
+    </div>
+    <div class="cm-card-body">
+        <div class="table-responsive">
+            <table class="table table-striped align-middle mb-0">
+                <thead>
+                <tr>
+                    <th>OS</th>
+                    <th>Entrada</th>
+                    <th>Saída</th>
+                    <th>Status</th>
+                    <th class="text-end">Valor</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for os in ordens %}
+                    <tr>
+                        <td class="fw-semibold"><a href="{% url 'os_detail' os.id_os %}">#{{ os.id_os }}</a></td>
+                        <td>{{ os.data_entrada }}</td>
+                        <td>{{ os.data_saida|default:"-" }}</td>
+                        <td>{{ os.get_status_display }}</td>
+                        <td class="text-end">R$ {{ os.valor_total|floatformat:2 }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center py-4">
+                            <div class="fw-bold">Sem histórico</div>
+                            <div class="cm-muted">Crie uma OS para esta moto para começar.</div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

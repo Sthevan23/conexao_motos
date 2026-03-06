@@ -1,0 +1,133 @@
+{% extends "oficina/base.html" %}
+
+{% block content %}
+<div class="cm-toolbar mb-3">
+    <div>
+        <h1 class="cm-page-title mb-1">{% if cliente %}Editar cliente{% else %}Novo cliente{% endif %}</h1>
+        <div class="cm-page-subtitle">Informações básicas do cliente</div>
+    </div>
+</div>
+
+<div class="card cm-card">
+    <div class="cm-card-header">
+        <div class="fw-bold">Dados do cliente</div>
+        <div class="cm-muted small">Campos com CPF devem ser únicos</div>
+    </div>
+    <div class="cm-card-body">
+        <form method="post" class="cm-form">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+            {% endif %}
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="{{ form.nome.id_for_label }}">Nome</label>
+                    {{ form.nome }}
+                    {{ form.nome.errors }}
+                </div>
+                <div class="col-md-3">
+                    <label for="{{ form.telefone.id_for_label }}">Telefone</label>
+                    {{ form.telefone }}
+                    {{ form.telefone.errors }}
+                </div>
+                <div class="col-md-3">
+                    <label for="{{ form.cpf.id_for_label }}">CPF</label>
+                    {{ form.cpf }}
+                    {{ form.cpf.errors }}
+                </div>
+                <div class="col-md-3">
+                    <label for="{{ form.cep.id_for_label }}">CEP</label>
+                    {{ form.cep }}
+                    {{ form.cep.errors }}
+                </div>
+                <div class="col-md-9">
+                    <label for="{{ form.logradouro.id_for_label }}">Logradouro (Rua/Av.)</label>
+                    {{ form.logradouro }}
+                    {{ form.logradouro.errors }}
+                </div>
+                <div class="col-md-3">
+                    <label for="{{ form.numero.id_for_label }}">Número</label>
+                    {{ form.numero }}
+                    {{ form.numero.errors }}
+                </div>
+                <div class="col-md-5">
+                    <label for="{{ form.bairro.id_for_label }}">Bairro</label>
+                    {{ form.bairro }}
+                    {{ form.bairro.errors }}
+                </div>
+                <div class="col-md-5">
+                    <label for="{{ form.cidade.id_for_label }}">Cidade</label>
+                    {{ form.cidade }}
+                    {{ form.cidade.errors }}
+                </div>
+                <div class="col-md-2">
+                    <label for="{{ form.estado.id_for_label }}">UF</label>
+                    {{ form.estado }}
+                    {{ form.estado.errors }}
+                </div>
+            </div>
+
+            <div class="mt-4 cm-form-actions">
+                <button type="submit" class="btn btn-success">Salvar</button>
+                <a href="{% url 'cliente_list' %}" class="btn btn-outline-secondary">Voltar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const cepField = document.querySelector('#id_cep');
+        const logradouroField = document.querySelector('#id_logradouro');
+        const bairroField = document.querySelector('#id_bairro');
+        const cidadeField = document.querySelector('#id_cidade');
+        const estadoField = document.querySelector('#id_estado');
+        const numeroField = document.querySelector('#id_numero');
+
+        if (cepField) {
+            cepField.addEventListener('blur', function () {
+                let cep = this.value.replace(/\D/g, '');
+
+                if (cep.length === 8) {
+                    // Limpa campos e mostra "buscando..."
+                    logradouroField.value = "Consultando...";
+                    bairroField.value = "...";
+                    cidadeField.value = "...";
+                    estadoField.value = "";
+
+                    fetch(`https://viacep.com.br/ws/${cep}/json/`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (!data.erro) {
+                                logradouroField.value = data.logradouro || "";
+                                bairroField.value = data.bairro || "";
+                                cidadeField.value = data.localidade || "";
+                                estadoField.value = data.uf || "";
+
+                                // Foco no número para agilizar
+                                if (numeroField) numeroField.focus();
+                            } else {
+                                alert("CEP não encontrado.");
+                                logradouroField.value = "";
+                                bairroField.value = "";
+                                cidadeField.value = "";
+                                estadoField.value = "";
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Erro ao buscar CEP:', error);
+                            logradouroField.value = "";
+                            bairroField.value = "";
+                            cidadeField.value = "";
+                            estadoField.value = "";
+                        });
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}
