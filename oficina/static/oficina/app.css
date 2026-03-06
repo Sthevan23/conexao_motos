@@ -1,0 +1,218 @@
+:root {
+  --cm-sidebar-border: rgba(255, 255, 255, 0.10);
+  --cm-sidebar-muted: rgba(255, 255, 255, 0.68);
+
+  --cm-surface: #ffffff;
+  --cm-surface-2: #f6f8fc;
+  --cm-border: rgba(15, 23, 42, 0.10);
+  --cm-text: #0f172a;
+  --cm-muted: rgba(15, 23, 42, 0.62);
+}
+
+body {
+  background: radial-gradient(1200px 600px at 10% 0%, rgba(59, 130, 246, 0.10), transparent 60%),
+              radial-gradient(900px 500px at 90% 10%, rgba(16, 185, 129, 0.08), transparent 55%),
+              linear-gradient(180deg, #f6f8fc 0%, #eef2ff 100%);
+  min-height: 100vh;
+}
+
+.cm-shell {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 18px;
+}
+
+.cm-sidebar {
+  position: sticky;
+  top: 18px;
+  height: calc(100vh - 36px);
+  border: 1px solid var(--cm-sidebar-border);
+  background: rgba(15, 26, 46, 0.7);
+  backdrop-filter: blur(8px);
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.cm-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 10px 14px;
+  border-bottom: 1px solid var(--cm-border);
+  margin-bottom: 12px;
+}
+
+.cm-badge {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #3b82f6, #22c55e);
+  box-shadow: 0 12px 30px rgba(59, 130, 246, 0.18);
+}
+
+.cm-brand-title {
+  line-height: 1.1;
+  color: #fff;
+  font-weight: 700;
+}
+
+.cm-brand-subtitle {
+  font-size: 0.85rem;
+  color: var(--cm-sidebar-muted);
+}
+
+.cm-nav .nav-link {
+  color: rgba(255, 255, 255, 0.78);
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+}
+
+.cm-nav .nav-link:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.cm-nav .nav-link.active {
+  color: #fff;
+  background: rgba(59, 130, 246, 0.18);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+}
+
+.cm-main {
+  border: 1px solid var(--cm-border);
+  background: var(--cm-surface);
+  border-radius: 14px;
+  padding: 18px;
+}
+
+.cm-page-title {
+  color: var(--cm-text);
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+.cm-page-subtitle {
+  color: var(--cm-muted);
+}
+
+.cm-card {
+  border: 1px solid var(--cm-border);
+  background: var(--cm-surface);
+  border-radius: 14px;
+}
+
+.cm-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.cm-card-body {
+  padding: 16px;
+}
+
+.cm-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.cm-search {
+  max-width: 420px;
+  width: 100%;
+}
+
+.cm-form label {
+  font-weight: 700;
+  color: rgba(15, 23, 42, 0.72);
+  margin-bottom: 6px;
+}
+
+.cm-form .helptext {
+  display: block;
+  margin-top: 6px;
+  color: rgba(15, 23, 42, 0.55);
+  font-size: 0.9rem;
+}
+
+.cm-form .errorlist {
+  list-style: none;
+  padding-left: 0;
+  margin: 8px 0 0;
+  color: #b42318;
+  font-weight: 600;
+}
+
+.cm-form .errorlist li {
+  margin-top: 4px;
+}
+
+.cm-form-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.cm-muted {
+  color: var(--cm-muted) !important;
+}
+
+.cm-card .card-title,
+.cm-card h1,
+.cm-card h2,
+.cm-card h3,
+.cm-card h4 {
+  color: var(--cm-text);
+}
+
+.table {
+  --bs-table-bg: transparent;
+  --bs-table-color: var(--cm-text);
+  --bs-table-striped-color: var(--cm-text);
+  --bs-table-striped-bg: rgba(15, 23, 42, 0.03);
+  --bs-table-border-color: rgba(15, 23, 42, 0.08);
+}
+
+.table thead th {
+  color: rgba(15, 23, 42, 0.70);
+  font-weight: 700;
+}
+
+.form-control, .form-select, textarea, input {
+  border-radius: 12px !important;
+}
+
+.btn {
+  border-radius: 12px;
+}
+
+.cm-kpi {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.cm-kpi .cm-kpi-label {
+  color: rgba(15, 23, 42, 0.70);
+  font-weight: 600;
+}
+
+.cm-kpi .cm-kpi-value {
+  color: var(--cm-text);
+  font-weight: 900;
+  font-size: 1.8rem;
+  line-height: 1.1;
+}
+
+@media (max-width: 992px) {
+  .cm-shell { grid-template-columns: 1fr; }
+  .cm-sidebar { position: relative; height: auto; top: auto; }
+}
+
