@@ -1,0 +1,65 @@
+<% layout('layouts/base') %>
+
+    <div class="d-flex justify-content-between align-items-end mb-3">
+        <div>
+            <h1 class="cm-page-title mb-1">Ordens de Serviço</h1>
+            <div class="cm-page-subtitle">
+                <%= ordens.length %> ordens registradas
+            </div>
+        </div>
+        <a href="/ordens/nova" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Nova OS</a>
+    </div>
+
+    <div class="card cm-card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Cliente</th>
+                            <th>Moto</th>
+                            <th>Entrada</th>
+                            <th>Status</th>
+                            <th class="text-end">Total</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (ordens.length===0) { %>
+                            <tr>
+                                <td colspan="7">Nenhuma ordem de serviço registrada.</td>
+                            </tr>
+                            <% } else { %>
+                                <% ordens.forEach(o=> { %>
+                                    <tr>
+                                        <td><strong>#<%= o.id_os %></strong></td>
+                                        <td>
+                                            <%= o.cliente ? o.cliente.nome : '–' %>
+                                        </td>
+                                        <td>
+                                            <%= o.moto ? `${o.moto.placa} – ${o.moto.modelo}` : '–' %>
+                                        </td>
+                                        <td>
+                                            <%= new Date(o.data_entrada).toLocaleString('pt-BR') %>
+                                        </td>
+                                        <td>
+                                            <span
+                                                class="badge <%= o.status==='finalizado'?'text-bg-success':o.status==='em_andamento'?'text-bg-warning':'text-bg-secondary' %>">
+                                                <%= o.status %>
+                                            </span>
+                                        </td>
+                                        <td class="text-end">R$ <%= parseFloat(o.valor_total).toFixed(2) %>
+                                        </td>
+                                        <td class="text-end">
+                                            <a href="/ordens/<%= o.id_os %>"
+                                                class="btn btn-sm btn-outline-primary">Ver</a>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>

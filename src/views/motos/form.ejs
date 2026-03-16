@@ -1,0 +1,71 @@
+<% layout('layouts/base') %>
+
+    <div class="d-flex justify-content-between align-items-end mb-3">
+        <h1 class="cm-page-title mb-0">Nova Moto</h1>
+        <a href="/motos" class="btn btn-outline-secondary">← Voltar</a>
+    </div>
+
+    <div class="card cm-card">
+        <div class="card-body cm-form">
+            <% if (errors.geral) { %>
+                <div class="alert alert-danger">
+                    <%= errors.geral %>
+                </div>
+                <% } %>
+                    <form method="POST" action="/motos/nova">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Cliente *</label>
+                                <select name="cliente_id" class="form-select <%= errors.cliente_id?'is-invalid':'' %>"
+                                    required>
+                                    <option value="">Selecione...</option>
+                                    <% clientes.forEach(c=> { %>
+                                        <option value="<%= c.id_cliente %>" <%=(moto &&
+                                            moto.cliente_id==c.id_cliente)?'selected':'' %>><%= c.nome %>
+                                        </option>
+                                        <% }) %>
+                                </select>
+                                <% if (errors.cliente_id) { %>
+                                    <div class="invalid-feedback">
+                                        <%= errors.cliente_id %>
+                                    </div>
+                                    <% } %>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Marca *</label>
+                                <input type="text" name="marca" class="form-control"
+                                    value="<%= (moto&&moto.marca)||'' %>" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Modelo *</label>
+                                <input type="text" name="modelo" class="form-control"
+                                    value="<%= (moto&&moto.modelo)||'' %>" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Placa *</label>
+                                <input type="text" name="placa" class="form-control <%= errors.placa?'is-invalid':'' %>"
+                                    value="<%= (moto&&moto.placa)||'' %>" required>
+                                <% if (errors.placa) { %>
+                                    <div class="invalid-feedback">
+                                        <%= errors.placa %>
+                                    </div>
+                                    <% } %>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Ano *</label>
+                                <input type="number" name="ano" class="form-control" value="<%= (moto&&moto.ano)||'' %>"
+                                    required>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Cor *</label>
+                                <input type="text" name="cor" class="form-control" value="<%= (moto&&moto.cor)||'' %>"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="cm-form-actions mt-4">
+                            <button type="submit" class="btn btn-primary">Salvar</button>
+                            <a href="/motos" class="btn btn-outline-secondary">Cancelar</a>
+                        </div>
+                    </form>
+        </div>
+    </div>

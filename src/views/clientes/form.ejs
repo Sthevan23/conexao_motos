@@ -1,0 +1,83 @@
+<% layout('layouts/base') %>
+
+    <div class="d-flex justify-content-between align-items-end mb-3">
+        <h1 class="cm-page-title mb-0">
+            <%= cliente ? 'Editar Cliente' : 'Novo Cliente' %>
+        </h1>
+        <a href="/clientes" class="btn btn-outline-secondary">← Voltar</a>
+    </div>
+
+    <div class="card cm-card">
+        <div class="card-body cm-form">
+            <% if (errors.geral) { %>
+                <div class="alert alert-danger">
+                    <%= errors.geral %>
+                </div>
+                <% } %>
+                    <form method="POST"
+                        action="<%= cliente ? `/clientes/${cliente.id_cliente}/editar` : '/clientes/novo' %>">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Nome *</label>
+                                <input type="text" name="nome"
+                                    class="form-control <%= errors.nome ? 'is-invalid' : '' %>"
+                                    value="<%= (cliente && cliente.nome) || '' %>" required>
+                                <% if (errors.nome) { %>
+                                    <div class="invalid-feedback">
+                                        <%= errors.nome %>
+                                    </div>
+                                    <% } %>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">CPF *</label>
+                                <input type="text" name="cpf" class="form-control <%= errors.cpf ? 'is-invalid' : '' %>"
+                                    value="<%= (cliente && cliente.cpf) || '' %>" required>
+                                <% if (errors.cpf) { %>
+                                    <div class="invalid-feedback">
+                                        <%= errors.cpf %>
+                                    </div>
+                                    <% } %>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Telefone</label>
+                                <input type="text" name="telefone" class="form-control"
+                                    value="<%= (cliente && cliente.telefone) || '' %>">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">CEP</label>
+                                <input type="text" name="cep" class="form-control"
+                                    value="<%= (cliente && cliente.cep) || '' %>">
+                            </div>
+                            <div class="col-md-5">
+                                <label class="form-label">Logradouro</label>
+                                <input type="text" name="logradouro" class="form-control"
+                                    value="<%= (cliente && cliente.logradouro) || '' %>">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Número</label>
+                                <input type="text" name="numero" class="form-control"
+                                    value="<%= (cliente && cliente.numero) || '' %>">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Bairro</label>
+                                <input type="text" name="bairro" class="form-control"
+                                    value="<%= (cliente && cliente.bairro) || '' %>">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Cidade</label>
+                                <input type="text" name="cidade" class="form-control"
+                                    value="<%= (cliente && cliente.cidade) || '' %>">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Estado</label>
+                                <input type="text" name="estado" class="form-control" maxlength="2"
+                                    value="<%= (cliente && cliente.estado) || '' %>">
+                            </div>
+                        </div>
+                        <div class="cm-form-actions mt-4">
+                            <button type="submit" class="btn btn-primary">Salvar</button>
+                            <a href="/clientes" class="btn btn-outline-secondary">Cancelar</a>
+                        </div>
+                    </form>
+        </div>
+    </div>

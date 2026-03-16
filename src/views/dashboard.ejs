@@ -1,0 +1,127 @@
+<% layout('layouts/base') %>
+
+    <div class="d-flex justify-content-between align-items-end flex-wrap gap-2 mb-3">
+        <div>
+            <h1 class="cm-page-title mb-1">Dashboard</h1>
+            <div class="cm-page-subtitle">Visão rápida do dia a dia da oficina</div>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <a href="/relatorios" class="btn btn-outline-primary btn-sm"><i class="bi bi-graph-up"></i> Ver
+                relatórios</a>
+            <div class="cm-page-subtitle">Atualizado em: <%= agora %>
+            </div>
+        </div>
+    </div>
+
+    <% if (estoque_baixo.length> 0) { %>
+        <div class="alert alert-danger d-flex align-items-center mb-4" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2 fs-4"></i>
+            <div>
+                <strong>Atenção:</strong> Existem <strong>
+                    <%= estoque_baixo.length %>
+                </strong> peças com estoque crítico (abaixo de 3 unidades).
+                <a href="#estoque-baixo-tabela" class="alert-link ms-1">Ver itens abaixo</a>.
+            </div>
+        </div>
+        <% } %>
+
+            <div class="row g-3 mb-3">
+                <div class="col-md-3">
+                    <a href="/ordens" class="text-decoration-none">
+                        <div class="card cm-card h-100">
+                            <div class="card-body cm-kpi">
+                                <div>
+                                    <div class="cm-kpi-label">Motos em manutenção</div>
+                                    <div class="cm-kpi-value">
+                                        <%= motos_em_manutencao %>
+                                    </div>
+                                </div>
+                                <span class="badge text-bg-primary">OS abertas</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="/ordens" class="text-decoration-none">
+                        <div class="card cm-card h-100">
+                            <div class="card-body cm-kpi">
+                                <div>
+                                    <div class="cm-kpi-label">Serviços do dia</div>
+                                    <div class="cm-kpi-value">
+                                        <%= servicos_do_dia %>
+                                    </div>
+                                </div>
+                                <span class="badge text-bg-info">Hoje</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <div class="card cm-card">
+                        <div class="card-body cm-kpi">
+                            <div>
+                                <div class="cm-kpi-label">Faturamento do dia</div>
+                                <div class="cm-kpi-value">R$ <%= faturamento_do_dia %>
+                                </div>
+                            </div>
+                            <span class="badge text-bg-success">Finalizadas</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <a href="/pecas" class="text-decoration-none">
+                        <div class="card cm-card h-100">
+                            <div class="card-body cm-kpi">
+                                <div>
+                                    <div class="cm-kpi-label">Peças com estoque baixo</div>
+                                    <div class="cm-kpi-value">
+                                        <%= estoque_baixo.length %>
+                                    </div>
+                                </div>
+                                <span
+                                    class="badge <%= estoque_baixo.length > 0 ? 'text-bg-danger' : 'text-bg-success' %>">
+                                    <%= estoque_baixo.length> 0 ? 'Atenção' : 'OK' %>
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="card cm-card" id="estoque-baixo-tabela">
+                <div class="card-body">
+                    <h3 class="mb-3">Alerta de estoque baixo</h3>
+                    <div class="table-responsive">
+                        <table class="table table-striped align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Peça</th>
+                                    <th>Código</th>
+                                    <th>Quantidade em estoque</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if (estoque_baixo.length===0) { %>
+                                    <tr>
+                                        <td colspan="3">Nenhuma peça com estoque baixo.</td>
+                                    </tr>
+                                    <% } else { %>
+                                        <% estoque_baixo.forEach(peca=> { %>
+                                            <tr>
+                                                <td>
+                                                    <%= peca.nome_da_peca %>
+                                                </td>
+                                                <td>
+                                                    <%= peca.codigo %>
+                                                </td>
+                                                <td>
+                                                    <%= peca.quantidade_estoque %>
+                                                </td>
+                                            </tr>
+                                            <% }) %>
+                                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>

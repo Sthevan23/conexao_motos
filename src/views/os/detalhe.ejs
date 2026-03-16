@@ -1,0 +1,158 @@
+<% layout('layouts/base') %>
+
+    <div class="d-flex justify-content-between align-items-end flex-wrap gap-2 mb-3">
+        <div>
+            <h1 class="cm-page-title mb-1">OS #<%= ordem.id_os %>
+            </h1>
+            <div class="cm-page-subtitle">
+                Cliente: <strong>
+                    <%= ordem.cliente ? ordem.cliente.nome : '–' %>
+                </strong> &nbsp;|&nbsp;
+                Moto: <strong>
+                    <%= ordem.moto ? `${ordem.moto.placa} – ${ordem.moto.modelo}` : '–' %>
+                </strong>
+            </div>
+        </div>
+        <div class="d-flex gap-2 align-items-center">
+            <span
+                class="badge fs-6 <%= ordem.status==='finalizado'?'text-bg-success':ordem.status==='em_andamento'?'text-bg-warning':'text-bg-secondary' %>">
+                <%= ordem.status %>
+            </span>
+            <% if (ordem.status !=='finalizado' ) { %>
+                <form method="POST" action="/ordens/<%= ordem.id_os %>/finalizar">
+                    <button class="btn btn-success btn-sm">Finalizar OS</button>
+                </form>
+                <% } %>
+                    <a href="/ordens" class="btn btn-outline-secondary btn-sm">← Ordens</a>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-3">
+        <div class="col-md-3">
+            <div class="card cm-card h-100">
+                <div class="card-body cm-kpi">
+                    <div>
+                        <div class="cm-kpi-label">Total da OS</div>
+                        <div class="cm-kpi-value">R$ <%= parseFloat(ordem.valor_total).toFixed(2) %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card cm-card h-100">
+                <div class="card-body">
+                    <div class="cm-kpi-label mb-1">Entrada</div>
+                    <div>
+                        <%= new Date(ordem.data_entrada).toLocaleString('pt-BR') %>
+                    </div>
+                    <div class="cm-kpi-label mt-2 mb-1">Saída</div>
+                    <div>
+                        <%= ordem.data_saida ? new Date(ordem.data_saida).toLocaleString('pt-BR') : '–' %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Items table -->
+    <div class="card cm-card mb-3">
+        <div class="card-body">
+            <h4 class="mb-3">Itens da OS</h4>
+            <div class="table-responsive">
+                <table class="table table-striped align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Item</th>
+                            <th>Qtd</th>
+                            <th>Preço unit.</th>
+                            <th class="text-end">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (itens.length===0) { %>
+                            <tr>
+                                <td colspan="5">Nenhum item adicionado ainda.</td>
+                            </tr>
+                            <% } else { %>
+                                <% itens.forEach(i=> { %>
+                                    <tr>
+                                        <td><span
+                                                class="badge <%= i.tipo_item==='Peça'?'text-bg-primary':'text-bg-info' %>">
+                                                <%= i.tipo_item %>
+                                            </span></td>
+                                        <td>
+                                            <%= i.ref_nome %>
+                                        </td>
+                                        <td>
+                                            <%= i.quantidade %>
+                                        </td>
+                                        <td>R$ <%= i.preco_unitario %>
+                                        </td>
+                                        <td class="text-end">R$ <%= i.total_linha %>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add item form -->
+    <% if (ordem.status !=='finalizado' ) { %>
+        <div class="card cm-card">
+            <div class="card-body cm-form">
+                <h4 class="mb-3">Adicionar item</h4>
+                <% if (errors.quantidade || errors.id_referencia) { %>
+                    <div class="alert alert-danger">
+                        <%= errors.quantidade || errors.id_referencia %>
+                    </div>
+                    <% } %>
+                        <form method="POST" action="/ordens/<%= ordem.id_os %>/item" id="addItemForm">
+                            <div class="row g-3 align-items-end">
+                                <div class="col-md-3">
+                                    <label class="form-label">Tipo</label>
+                                    <select name="tipo_item" id="tipoItem" class="form-select"
+                                        onchange="updateItemSelect()">
+                                        <option value="peca">Peça</option>
+                                        <option value="servico">Serviço</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Item</label>
+                                    <select name="id_referencia" id="itemSelect" class="form-select" required></select>
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="form-label">Quantidade</label>
+                                    <input type="number" name="quantidade" min="1" value="1" class="form-control"
+                                        required>
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="form-label">Preço (deixe 0 para automático)</label>
+                                    <input type="number" step="0.01" name="preco_unitario" value="0"
+                                        class="form-control">
+                                </div>
+                                <div class="col-md-1">
+                                    <button type="submit" class="btn btn-primary w-100">+</button>
+                                </div>
+                            </div>
+                        </form>
+            </div>
+        </div>
+
+        <script>
+            const pecas = <% - JSON.stringify(pecas.map(p => ({ id: p.id_peca, nome: p.nome_da_peca, preco: p.preco_venda }))) %>;
+            const servicos = <% - JSON.stringify(servicos.map(s => ({ id: s.id_servico, nome: s.nome_servico, preco: s.preco }))) %>;
+
+            function updateItemSelect() {
+                const tipo = document.getElementById('tipoItem').value;
+                const sel = document.getElementById('itemSelect');
+                const items = tipo === 'peca' ? pecas : servicos;
+                sel.innerHTML = items.map(i => `<option value="${i.id}">${i.nome} (R$ ${parseFloat(i.preco).toFixed(2)})</option>`).join('');
+            }
+            window.addEventListener('DOMContentLoaded', updateItemSelect);
+        </script>
+        <% } %>

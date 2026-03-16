@@ -1,0 +1,56 @@
+<% layout('layouts/base') %>
+
+    <div class="d-flex justify-content-between align-items-end mb-3">
+        <div>
+            <h1 class="cm-page-title mb-1">Serviços</h1>
+            <div class="cm-page-subtitle">
+                <%= servicos.length %> serviços cadastrados
+            </div>
+        </div>
+        <a href="/servicos/novo" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Novo serviço</a>
+    </div>
+
+    <div class="card cm-card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Descrição</th>
+                            <th>Preço</th>
+                            <th>Tempo estimado</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (servicos.length===0) { %>
+                            <tr>
+                                <td colspan="5">Nenhum serviço cadastrado.</td>
+                            </tr>
+                            <% } else { %>
+                                <% servicos.forEach(s=> { %>
+                                    <tr>
+                                        <td>
+                                            <%= s.nome_servico %>
+                                        </td>
+                                        <td class="cm-muted">
+                                            <%= s.descricao %>
+                                        </td>
+                                        <td>R$ <%= parseFloat(s.preco).toFixed(2) %>
+                                        </td>
+                                        <td>
+                                            <%= s.tempo_estimado %>
+                                        </td>
+                                        <td class="text-end">
+                                            <a href="/servicos/<%= s.id_servico %>/editar"
+                                                class="btn btn-sm btn-outline-primary">Editar</a>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>

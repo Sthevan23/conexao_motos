@@ -1,0 +1,120 @@
+<% layout('layouts/base') %>
+
+    <div class="d-flex justify-content-between align-items-end mb-3">
+        <div>
+            <h1 class="cm-page-title mb-1">Relatórios</h1>
+            <div class="cm-page-subtitle">Faturamento e desempenho da oficina</div>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card cm-card h-100">
+                <div class="card-body cm-kpi">
+                    <div>
+                        <div class="cm-kpi-label">Faturamento do dia</div>
+                        <div class="cm-kpi-value">R$ <%= faturamento_diario %>
+                        </div>
+                    </div>
+                    <span class="badge text-bg-primary">Hoje</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card cm-card h-100">
+                <div class="card-body cm-kpi">
+                    <div>
+                        <div class="cm-kpi-label">Faturamento da semana</div>
+                        <div class="cm-kpi-value">R$ <%= faturamento_semanal %>
+                        </div>
+                    </div>
+                    <span class="badge text-bg-info">Semana</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card cm-card h-100">
+                <div class="card-body cm-kpi">
+                    <div>
+                        <div class="cm-kpi-label">Faturamento do mês</div>
+                        <div class="cm-kpi-value">R$ <%= faturamento_mensal %>
+                        </div>
+                    </div>
+                    <span class="badge text-bg-success">Mês</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-md-6">
+            <div class="card cm-card h-100">
+                <div class="card-body">
+                    <h4 class="mb-3">Serviços mais realizados</h4>
+                    <div class="table-responsive">
+                        <table class="table table-striped align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Serviço</th>
+                                    <th class="text-end">Qtd</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if (servicos_mais_realizados.length===0) { %>
+                                    <tr>
+                                        <td colspan="2">Sem dados.</td>
+                                    </tr>
+                                    <% } else { %>
+                                        <% servicos_mais_realizados.forEach(s=> { %>
+                                            <tr>
+                                                <td>
+                                                    <%= s.nome %>
+                                                </td>
+                                                <td class="text-end">
+                                                    <%= s.qtd %>
+                                                </td>
+                                            </tr>
+                                            <% }) %>
+                                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card cm-card h-100">
+                <div class="card-body">
+                    <h4 class="mb-3">Peças mais vendidas</h4>
+                    <div class="table-responsive">
+                        <table class="table table-striped align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Peça</th>
+                                    <th class="text-end">Qtd</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if (pecas_mais_vendidas.length===0) { %>
+                                    <tr>
+                                        <td colspan="2">Sem dados.</td>
+                                    </tr>
+                                    <% } else { %>
+                                        <% pecas_mais_vendidas.forEach(p=> { %>
+                                            <tr>
+                                                <td>
+                                                    <%= p.nome %>
+                                                </td>
+                                                <td class="text-end">
+                                                    <%= p.qtd %>
+                                                </td>
+                                            </tr>
+                                            <% }) %>
+                                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

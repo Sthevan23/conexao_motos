@@ -1,0 +1,63 @@
+<% layout('layouts/base') %>
+
+    <div class="d-flex justify-content-between align-items-end mb-3">
+        <h1 class="cm-page-title mb-0">
+            <%= peca ? 'Editar Peça' : 'Nova Peça' %>
+        </h1>
+        <a href="/pecas" class="btn btn-outline-secondary">← Voltar</a>
+    </div>
+
+    <div class="card cm-card">
+        <div class="card-body cm-form">
+            <% if (errors.geral) { %>
+                <div class="alert alert-danger">
+                    <%= errors.geral %>
+                </div>
+                <% } %>
+                    <form method="POST" action="<%= peca ? `/pecas/${peca.id_peca}/editar` : '/pecas/nova' %>">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Nome da peça *</label>
+                                <input type="text" name="nome_da_peca" class="form-control"
+                                    value="<%= (peca&&peca.nome_da_peca)||'' %>" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Código *</label>
+                                <input type="text" name="codigo"
+                                    class="form-control <%= errors.codigo?'is-invalid':'' %>"
+                                    value="<%= (peca&&peca.codigo)||'' %>" required>
+                                <% if (errors.codigo) { %>
+                                    <div class="invalid-feedback">
+                                        <%= errors.codigo %>
+                                    </div>
+                                    <% } %>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Marca</label>
+                                <input type="text" name="marca" class="form-control"
+                                    value="<%= (peca&&peca.marca)||'' %>">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Preço de custo *</label>
+                                <input type="number" step="0.01" name="preco_custo" class="form-control"
+                                    value="<%= (peca&&peca.preco_custo)||'' %>" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Preço de venda *</label>
+                                <input type="number" step="0.01" name="preco_venda" class="form-control"
+                                    value="<%= (peca&&peca.preco_venda)||'' %>" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Quantidade em estoque</label>
+                                <input type="number" name="quantidade_estoque" class="form-control"
+                                    value="<%= (peca&&peca.quantidade_estoque!=null?peca.quantidade_estoque:0) %>"
+                                    min="0">
+                            </div>
+                        </div>
+                        <div class="cm-form-actions mt-4">
+                            <button type="submit" class="btn btn-primary">Salvar</button>
+                            <a href="/pecas" class="btn btn-outline-secondary">Cancelar</a>
+                        </div>
+                    </form>
+        </div>
+    </div>

@@ -1,0 +1,31 @@
+{
+  "name": "conexao_motos",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sthevan23/conexao_motos.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Sthevan23/conexao_motos/issues"
+  },
+  "homepage": "https://github.com/Sthevan23/conexao_motos#readme",
+  "dependencies": {
+    "dotenv": "^17.3.1",
+    "ejs": "^5.0.1",
+    "ejs-mate": "^4.0.0",
+    "express": "^5.2.1",
+    "method-override": "^3.0.0",
+    "sequelize": "^6.37.8",
+    "sqlite3": "^6.0.1"
+  }
+}

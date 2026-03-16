@@ -1,0 +1,56 @@
+<% layout('layouts/base') %>
+
+    <div class="d-flex justify-content-between align-items-end mb-3">
+        <div>
+            <h1 class="cm-page-title mb-1">Histórico – <%= moto.placa %>
+            </h1>
+            <div class="cm-page-subtitle">
+                <%= moto.marca %>
+                    <%= moto.modelo %> – <%= moto.ano %>
+            </div>
+        </div>
+        <a href="/motos" class="btn btn-outline-secondary">← Motos</a>
+    </div>
+
+    <div class="card cm-card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Entrada</th>
+                            <th>Saída</th>
+                            <th>Status</th>
+                            <th class="text-end">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (ordens.length===0) { %>
+                            <tr>
+                                <td colspan="5">Nenhuma ordem de serviço para esta moto.</td>
+                            </tr>
+                            <% } else { %>
+                                <% ordens.forEach(o=> { %>
+                                    <tr>
+                                        <td><a href="/ordens/<%= o.id_os %>">#<%= o.id_os %></a></td>
+                                        <td>
+                                            <%= new Date(o.data_entrada).toLocaleString('pt-BR') %>
+                                        </td>
+                                        <td>
+                                            <%= o.data_saida ? new Date(o.data_saida).toLocaleString('pt-BR') : '–' %>
+                                        </td>
+                                        <td><span
+                                                class="badge <%= o.status==='finalizado'?'text-bg-success':o.status==='em_andamento'?'text-bg-warning':'text-bg-secondary' %>">
+                                                <%= o.status %>
+                                            </span></td>
+                                        <td class="text-end">R$ <%= parseFloat(o.valor_total).toFixed(2) %>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
